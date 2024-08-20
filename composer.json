@@ -13,6 +13,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.3",
+        "livewire/volt": "^1.6",
         "robsontenorio/mary": "^1.11"
     },
     "require-dev": {

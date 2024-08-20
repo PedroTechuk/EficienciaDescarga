@@ -1,0 +1,48 @@
+services:
+
+  db1:
+    image: mysql:5.7.28
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    networks:
+      - db_network
+    environment:
+      - MYSQL_USER=dev
+      - MYSQL_PASSWORD=Dev@123
+      - MYSQL_ROOT_PASSWORD=Dev@123
+      - MYSQL_DATABASE=eficiencia_descarga
+      - MYSQL_ROOT_HOST="%"
+    ports:
+      - 3307:3306
+    expose:
+      - '3307'
+
+  db2:
+    image: mysql:8.0.34
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    networks:
+      - db_network
+    environment:
+      - MYSQL_USER=dev
+      - MYSQL_PASSWORD=Dev@123
+      - MYSQL_ROOT_PASSWORD=Dev@123
+      - MYSQL_DATABASE=eficiencia_descarga
+      - MYSQL_ROOT_HOST="%"
+    ports:
+      - 3306:3306
+    expose:
+      - '3306'
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    networks:
+      - db_network
+    environment:
+      PMA_ARBITRARY: 1
+    ports:
+      - 8090:80
+
+networks:
+  db_network:

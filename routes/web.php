@@ -1,14 +1,18 @@
 <?php
 
+use Livewire\Livewire;
+use Livewire\Volt\Volt;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SolicitacaoController;
 use App\Http\Controllers\SetorController;
+use App\Livewire\Descarte;
+use App\Livewire\Counter;
 use App\Models\Perfil;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Livewire\Livewire;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -31,9 +35,10 @@ if (env('APP_ENV') === 'production') {
     });
 }
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');;
+//Route::match(['get','post'],'/descartes', [Descarte::class, 'render'])->name('descarte.index');
+Route::get('/descartes', Descarte::class)->name('descarte.index');
+Route::get('/counter', Counter::class)->name('counter.index');
+
 
 Route::prefix('/erros')->group(function () {
     Route::view('/403', 'erros.403')->name('erros.403');
