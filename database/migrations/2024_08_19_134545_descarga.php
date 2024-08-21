@@ -18,8 +18,9 @@ return new class extends Migration
                 table: 'placas',
                 indexName: 'placa_id'
             );
-            $table->timestamp('hora_inicio');
-            $table->timestamp('hora_fim');
+            $table->time('hora_inicio');
+            $table->time('hora_fim');
+            $table->date('data');
             $table->timestamps();
         });
     }

@@ -1,0 +1,2 @@
+Quando clicar em iniciar não pode começar a contagem denovo, só depois que finalizar
+Aparecer as placas no relatório e náo o id
