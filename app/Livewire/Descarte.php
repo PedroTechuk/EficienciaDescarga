@@ -15,27 +15,37 @@ class Descarte extends Component
     public $data;
     public $start;
     public $end;
-
     public $placas;
     public $descargas;
 
-    // Carregar os dados ao iniciar o componente
+    protected $rules = [
+        'placa' => 'required',
+        'start' => 'required',
+    ];
+
     public function mount()
     {
         $this->placas = Placa::all();
         $this->descargas = Descarga::all();
     }
 
-    // Capturar o horário de início
+    // Atualizar a variável $placaSelecionada quando $placa mudar
+    public function updatedPlaca($value)
+    {
+        $this->placaSelecionada = Placa::find($value);
+    }
+
     public function captureStart()
     {
+        $this->validateOnly('placa');
         $this->start = Carbon::now()->format('H:i:s');
         session()->flash('message', 'Início capturado às ' . $this->start);
     }
 
-    // Finalizar e criar o registro
     public function create()
     {
+        $this->validate();
+
         $this->end = Carbon::now()->format('H:i:s');
         $this->data = Carbon::now()->format('Y-m-d');
 
@@ -46,6 +56,12 @@ class Descarte extends Component
             'hora_fim' => $this->end,
             'data' => $this->data,
         ]);
+
+        // Limpar os valores após a criação do registro
+        $this->placa = '';
+        $this->start = '';
+        $this->end = '';
+        $this->placaSelecionada = null; // Resetar a placa selecionada
 
         // Atualizar a lista de descargas
         $this->descargas = Descarga::all();
@@ -58,3 +74,5 @@ class Descarte extends Component
         return view('livewire.descarte');
     }
 }
+
+

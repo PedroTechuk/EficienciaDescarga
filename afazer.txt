@@ -1,2 +1,15 @@
 Quando clicar em iniciar não pode começar a contagem denovo, só depois que finalizar
 Aparecer as placas no relatório e náo o id
+
+            EXIBIR DESCARGAS ->
+
+    @foreach($descargas as $descarga)
+        {{ $descarga->placa }} - {{ $descarga->hora_inicio }} - {{ $descarga->hora_fim }} - {{ $descarga->data }}
+        <hr>
+    @endforeach
+
+    @if (session()->has('message'))
+        <div class="alert alert-success">
+            {{ session('message') }}
+        </div>
+    @endif
