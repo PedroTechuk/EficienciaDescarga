@@ -23,6 +23,17 @@ class Descarte extends Component
         'start' => 'required',
     ];
 
+    //Scan QRCode
+    public $qrCodeData;
+
+    public function handleQrCodeScanned($qrCode)
+    {
+        $this->qrCodeData = $qrCode;
+
+        return redirect()->route( $this->qrCodeData);
+    }
+
+
     public function mount()
     {
         $this->placas = Placa::all();

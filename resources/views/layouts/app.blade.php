@@ -13,6 +13,12 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/styles/choices.min.css" />
+
+    <script src="https://unpkg.com/html5-qrcode"></script>
+
+    <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+
+
     <script src="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/scripts/choices.min.js"></script>
 
 
@@ -45,7 +51,9 @@
 
             {{-- Custom `active menu item background color` --}}
             <x-menu activate-by-route>
-                <x-menu-item title="Mensurar Descarga" icon="o-archive-box" link="{{ route('descarte.index') }}" />
+                <x-menu-item title="Mensurar Descarga" icon="o-clock" link="{{ route('descarte.index') }}" />
+                <x-menu-item title="Placas" icon="o-archive-box" link="{{ route('descarte.index') }}" />
+                <x-menu-item title="Relatório" icon="o-document" link="{{ route('descarte.index') }}" />
             </x-menu>
 
         </x-slot:sidebar>
@@ -54,6 +62,11 @@
         <x-slot:content>
             <x-toast />
             {{ $slot }}
+
+
+
+
+
         </x-slot:content>
     </x-main>
 
