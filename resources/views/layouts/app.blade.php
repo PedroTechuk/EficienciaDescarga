@@ -51,9 +51,9 @@
 
             {{-- Custom `active menu item background color` --}}
             <x-menu activate-by-route>
-                <x-menu-item title="Mensurar Descarga" icon="o-clock" link="{{ route('descarte.index') }}" />
+                <x-menu-item title="Mensurar Descarga" icon="o-clock" link="{{ route('descargas.index') }}" />
                 <x-menu-item title="Placas" icon="o-archive-box" link="{{ route('placas.index') }}" />
-                <x-menu-item title="Relatório" icon="o-document" link="{{ route('descarte.index') }}" />
+                <x-menu-item title="Relatório" icon="o-document" link="{{ route('relatorios.index') }}" />
             </x-menu>
 
         </x-slot:sidebar>

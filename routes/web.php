@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Placas;
+use App\Livewire\Relatorio;
 use Livewire\Livewire;
 use Livewire\Volt\Volt;
 use App\Http\Controllers\ItemController;
@@ -37,8 +38,9 @@ if (env('APP_ENV') === 'production') {
 }
 
 //Route::match(['get','post'],'/descartes', [Descarte::class, 'render'])->name('descarte.index');
-Route::get('/descartes', Descarte::class)->name('descarte.index');
+Route::get('/descargas', Descarte::class)->name('descargas.index');
 Route::get('/placas', Placas::class)->name('placas.index');
+Route::get('/relatorios', Relatorio::class)->name('relatorios.index');
 
 
 Route::prefix('/erros')->group(function () {
