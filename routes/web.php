@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Placas;
 use Livewire\Livewire;
 use Livewire\Volt\Volt;
 use App\Http\Controllers\ItemController;
@@ -37,7 +38,7 @@ if (env('APP_ENV') === 'production') {
 
 //Route::match(['get','post'],'/descartes', [Descarte::class, 'render'])->name('descarte.index');
 Route::get('/descartes', Descarte::class)->name('descarte.index');
-Route::get('/counter', Counter::class)->name('counter.index');
+Route::get('/placas', Placas::class)->name('placas.index');
 
 
 Route::prefix('/erros')->group(function () {

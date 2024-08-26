@@ -24,14 +24,20 @@
                 </div>
 
                 <!-- Botões -->
+
                 <div class="w-full max-w-md">
-                    <button id="start-btn" wire:click.prevent="captureStart" class="bg-blue-500 text-lg text-white px-8 py-2.5 rounded-md hover:bg-blue-600 w-full mt-4">Iniciar</button>
+                    <button id="start-btn" wire:click.prevent="captureStart" class="bg-blue-500 text-lg text-white px-8 py-2.5 rounded-md hover:bg-blue-600 focus:ring-2 focus:ring-blue-400 w-full mt-4">Iniciar</button>
                 </div>
 
                 <div class="timer-display text-3xl" id="timer">00:00:00</div>
 
                 <div class="w-full max-w-md">
                     <button id="stop-btn" type="submit" class="bg-green-500 text-lg text-white px-8 py-2.5 rounded-md hover:bg-green-600 w-full mt-4">Finalizar</button>
+                    @if (session()->has('message'))
+                        <div class="alert alert-success">
+                            {{ session('message') }}
+                        </div>
+                    @endif
                 </div>
 
             </form>
