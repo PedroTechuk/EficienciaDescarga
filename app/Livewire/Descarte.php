@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use App\Models\Descarga;
 use App\Models\Placa;
 use function Symfony\Component\Translation\t;
+use Illuminate\Database\Eloquent\Model;
 
 class Descarte extends Component
 {
@@ -33,11 +34,10 @@ class Descarte extends Component
         return redirect()->route( $this->qrCodeData);
     }
 
-
     public function mount()
     {
         $this->placas = Placa::all();
-        $this->descargas = Descarga::all();
+        $this->descargas = Descarga::with('placa')->orderBy('data', 'desc')->orderBy('hora_inicio', 'desc')->get();
     }
 
     // Atualizar a variável $placaSelecionada quando $placa mudar

@@ -13,3 +13,19 @@ Aparecer as placas no relatório e náo o id
             {{ session('message') }}
         </div>
     @endif
+
+
+
+
+    <div class="mt-2 flex items-center">
+        <label for="placa" class="block text-md font-medium text-gray-700">Placa: </label>
+        <input type="text" id="placa" class="mt-1 ms-1 block w-40 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+
+        <div class="ml-4 flex items-center space-x-2"> <!-- Adicionado espaço entre o texto e o switch -->
+            <span class="text-md font-medium text-gray-700">Mercosul</span>
+            <label for="mercosul" class="inline-flex items-center cursor-pointer relative">
+                <input type="checkbox" id="mercosul" class="sr-only peer" />
+                <div class="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-blue-500 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:transition-all"></div>
+            </label>
+        </div>
+    </div>

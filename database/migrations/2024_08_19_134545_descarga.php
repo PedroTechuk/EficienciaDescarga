@@ -14,10 +14,8 @@ return new class extends Migration
         Schema::create('descargas', function (Blueprint $table) {
             $table->id();
             $table->integer('unidade');
-            $table->foreignId("placa_id")->constrained(
-                table: 'placas',
-                indexName: 'placa_id'
-            );
+            $table->unsignedBigInteger('placa_id');
+            $table->foreign('placa_id')->references('id')->on('placas')->onDelete('cascade');
             $table->time('hora_inicio');
             $table->time('hora_fim');
             $table->date('data');

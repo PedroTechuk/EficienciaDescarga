@@ -9,5 +9,10 @@ class Descarga extends Model
 {
     use HasFactory;
 
+    public function placa()
+    {
+        return $this->belongsTo(Placa::class, 'placa_id');
+    }
+
     protected $fillable = ['id', 'unidade', 'placa_id', 'hora_inicio','hora_fim' ,'data'];
 }
