@@ -35,7 +35,7 @@ class Placas extends Component
     public function mount()
     {
         // Ordenar as placas pela data de criação de forma decrescente
-        $this->placas = Placa::orderBy('created_at', 'desc')->get();
+        $this->placas = Placa::all();
         $this->descargas = Descarga::all();
     }
 
@@ -68,6 +68,17 @@ class Placas extends Component
         // Adicionar uma mensagem de sucesso
         session()->flash('message', 'Placa adicionada com sucesso!');
         $this->closeModal(); // Fechar o modal após salvar
+    }
+
+    public function delete($id)
+    {
+        $placa = Placa::find($id);
+
+        if ($placa) {
+            $placa->delete(); // Soft delete
+            $this->placas = Placa::orderBy('created_at', 'desc')->get();
+            session()->flash('message', 'Placa excluída com sucesso!');
+        }
     }
 
     public function render()

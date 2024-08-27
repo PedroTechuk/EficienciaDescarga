@@ -62,11 +62,7 @@
         <x-slot:content>
             <x-toast />
             {{ $slot }}
-
-
-
-
-
+            <x-toast />
         </x-slot:content>
     </x-main>
 

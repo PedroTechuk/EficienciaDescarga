@@ -9,6 +9,19 @@
             </x-button>
         </div>
 
+        <!-- Mensagem de sucesso -->
+        @if (session()->has('message'))
+            <mary-alert
+                id="success-alert"
+                type="success"
+                dismissable="true"
+                duration="5000"
+                role="alert"
+            >
+                <strong>Sucesso!</strong> {{ session('message') }}
+            </mary-alert>
+        @endif
+
         <div class="flex flex-col text-lg space-y-4">
             <div class="overflow-x-auto">
                 <!-- Tabela -->
@@ -25,13 +38,18 @@
                     <tbody>
                     @foreach($descargas as $descarga)
                         <tr class="border-b">
-                            <td class="py-2 px-4 text-center">{{ $descarga->placa->placa }}</td>
+                            <td class="py-2 px-4 text-center">{{ $descarga->placa?->placa }}</td>
                             <td class="py-2 px-4 text-center">{{ $descarga->hora_inicio }}</td>
                             <td class="py-2 px-4 text-center">{{ $descarga->hora_fim }}</td>
                             <td class="py-2 px-4 text-center">{{ \Carbon\Carbon::parse($descarga->data)->format('d/m/Y') }}</td>
                             <td class="py-2 px-4 text-right">
                                 <div class="flex justify-end space-x-2">
-                                    <x-button class="bg-red-500 text-white hover:bg-red-600 focus:ring-red-400 rounded-2xl p-2 flex items-center justify-center" title="Excluir">
+                                    <x-button
+                                        class="bg-red-500 text-white hover:bg-red-600 focus:ring-red-400 rounded-2xl p-2 flex items-center justify-center"
+                                        title="Excluir"
+                                        wire:click="delete({{ $descarga->id }})"
+                                        wire:confirm="Tem certeza que deseja excluir este relatório?"
+                                    >
                                         <x-icon name="o-trash" class="w-5 h-5" alt="Excluir" />
                                     </x-button>
                                 </div>
@@ -40,12 +58,6 @@
                     @endforeach
                     </tbody>
                 </table>
-
-                @if (session()->has('message'))
-                    <div class="alert alert-success mt-4">
-                        {{ session('message') }}
-                    </div>
-                @endif
             </div>
         </div>
     </x-app-layout>

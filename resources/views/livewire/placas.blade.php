@@ -1,7 +1,6 @@
 <section>
     <x-app-layout>
-
-        <!--Titulo-->
+        <!-- Titulo -->
         <div class="flex items-center justify-between mb-4">
             <div class="font-black text-3xl text-[#003CA2]">Placas</div>
 
@@ -70,11 +69,17 @@
                     </div>
                 </div>
             @endif
-
         </div>
 
-        <!--layout-->
-        <div class="flex flex-col text-lg space-y-4">
+        <!-- Mensagem de sucesso -->
+        @if (session()->has('message'))
+            <div class="alert alert-success mt-4 bg-green-600 border border-green-700 text-white px-4 py-3 rounded relative" role="alert">
+                {{ session('message') }}
+            </div>
+        @endif
+
+        <!-- Layout -->
+        <div class="flex flex-col text-lg space-y-4 mt-4">
             <div class="overflow-x-auto">
                 <!-- Tabela -->
                 <table class="min-w-full bg-white border border-gray-200">
@@ -95,7 +100,7 @@
                                     <x-button class="bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-gray-400 rounded-2xl p-2 flex items-center justify-center" title="Gerar QrCode">
                                         <x-icon name="o-qr-code" class="w-6 h-5" alt="Gerar QrCode" />
                                     </x-button>
-                                    <x-button class="bg-red-500 text-white hover:bg-red-600 focus:ring-red-400 rounded-2xl p-2 flex items-center justify-center" title="Excluir">
+                                    <x-button class="bg-red-500 text-white hover:bg-red-600 focus:ring-red-400 rounded-2xl p-2 flex items-center justify-center" title="Excluir" wire:click="delete({{ $placa->id }})" wire:confirm="Tem certeza que deseja excluir esta placa?">
                                         <x-icon name="o-trash" class="w-5 h-5" alt="Excluir" />
                                     </x-button>
                                 </div>
@@ -104,12 +109,6 @@
                     @endforeach
                     </tbody>
                 </table>
-
-                @if (session()->has('message'))
-                    <div class="alert alert-success mt-4">
-                        {{ session('message') }}
-                    </div>
-                @endif
             </div>
         </div>
     </x-app-layout>

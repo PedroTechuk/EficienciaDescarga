@@ -16,7 +16,8 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
-        "daisyui": "^4.4.20"
+        "daisyui": "^4.4.20",
+        "mary-ui": "^0.0.4"
     },
     "name": "eficiencia-descarregamento",
     "version": "1.0.0",
