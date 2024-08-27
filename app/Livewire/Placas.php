@@ -17,17 +17,10 @@ class Placas extends Component
     public $frota = ''; // Campo frota
 
     // Regras de validação
-    public function updatedMercosul($value)
-    {
-        if ($value) {
-            // Se Mercosul estiver habilitado
-            $this->rules['placa'] = ['required', 'regex:/^[A-Z]{3}[0-9]{1}[A-Z]{1}[0-9]{2}$/'];
-        } else {
-            // Se Mercosul estiver desabilitado
-            $this->rules['placa'] = ['required', 'regex:/^[A-Z]{3}[0-9]{4}$/'];
-        }
-    }
-
+    protected $rules = [
+        'placa' => ['required', 'regex:/^[A-Z]{3}[0-9]{4}$|^[A-Z]{3}[0-9]{1}[A-Z]{1}[0-9]{2}$/'],
+        'frota' => 'required',
+    ];
 
     public function openModal()
     {
@@ -41,7 +34,8 @@ class Placas extends Component
 
     public function mount()
     {
-        $this->placas = Placa::all();
+        // Ordenar as placas pela data de criação de forma decrescente
+        $this->placas = Placa::orderBy('created_at', 'desc')->get();
         $this->descargas = Descarga::all();
     }
 
@@ -55,13 +49,13 @@ class Placas extends Component
         // Converter a placa para uppercase
         $this->placa = strtoupper($this->placa);
 
+        // Validar todos os campos
         $this->validate();
 
         // Salvar a placa no banco de dados
         Placa::create([
             'placa' => $this->placa,
-            // Remover o campo 'frota' se não for mais necessário
-            // 'frota' => $this->frota,
+            'frota' => $this->frota,
         ]);
 
         // Atualizar a lista de placas
@@ -71,6 +65,7 @@ class Placas extends Component
         $this->placa = '';
         $this->frota = '';
 
+        // Adicionar uma mensagem de sucesso
         session()->flash('message', 'Placa adicionada com sucesso!');
         $this->closeModal(); // Fechar o modal após salvar
     }
@@ -80,3 +75,4 @@ class Placas extends Component
         return view('livewire.placas');
     }
 }
+

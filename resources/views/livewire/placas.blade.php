@@ -43,23 +43,23 @@
                                             </div>
                                         </div>
 
-
                                         <div class="mt-4">
                                             <label for="frota" class="block text-md font-medium text-gray-700">Frota:</label>
-                                            <select id="frota" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                                            <select id="frota" wire:model="frota" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
                                                 <option value="">Selecione</option>
                                                 <option value="Fixa">Fixa</option>
                                                 <option value="Freteiro">Freteiro</option>
                                             </select>
+
+                                            @error('frota')
+                                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                                            @enderror
                                         </div>
-
-
-
                                     </div>
                                 </div>
                             </div>
                             <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm" wire:click="closeModal">
+                                <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm" wire:click="save">
                                     Adicionar
                                 </button>
                                 <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm" wire:click="closeModal">
@@ -70,6 +70,7 @@
                     </div>
                 </div>
             @endif
+
         </div>
 
         <!--layout-->
