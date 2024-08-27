@@ -5,9 +5,12 @@ namespace App\Livewire;
 use App\Models\Descarga;
 use App\Models\Placa;
 use Livewire\Component;
+use Mary\Traits\Toast;
 
 class Placas extends Component
 {
+    use Toast;
+
     // Modal
     public $placas;
     public $descargas;
@@ -66,7 +69,7 @@ class Placas extends Component
         $this->frota = '';
 
         // Adicionar uma mensagem de sucesso
-        session()->flash('message', 'Placa adicionada com sucesso!');
+        $this->success('Placa adicionada com sucesso!');;
         $this->closeModal(); // Fechar o modal após salvar
     }
 
@@ -77,7 +80,7 @@ class Placas extends Component
         if ($placa) {
             $placa->delete(); // Soft delete
             $this->placas = Placa::orderBy('created_at', 'desc')->get();
-            session()->flash('message', 'Placa excluída com sucesso!');
+            $this->success('Placa removida com sucesso!');
         }
     }
 
