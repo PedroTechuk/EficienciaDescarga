@@ -18,9 +18,7 @@
 
     <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
 
-
     <script src="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/scripts/choices.min.js"></script>
-
 
     @livewireStyles
 
@@ -30,45 +28,44 @@
 
 <body class="min-h-screen font-sans antialiased">
 
-    {{-- Displays only on mobile --}}
-    <x-nav sticky class="lg:hidden bg-white text-dark">
-        <x-slot:brand>
-            <label for="main-drawer" class="lg:hidden mr-3">
-                <x-icon name="o-bars-3" class="cursor-pointer" />
-            </label>
-            Eficiencia de Descarga
-        </x-slot:brand>
-    </x-nav>
+<!-- Navbar para Mobile -->
+<x-nav sticky class="lg:hidden bg-white text-dark">
+    <x-slot:brand>
+        <label for="main-drawer" class="lg:hidden mr-3">
+            <x-icon name="o-bars-3" class="cursor-pointer" />
+        </label>
+        Eficiencia de Descarga
+    </x-slot:brand>
+</x-nav>
 
-    <x-main with-nav full-width>
-        <x-slot:sidebar drawer="main-drawer" collapsible class=" bg-white text-dark shadow-xl mr-4">
+<x-main with-nav full-width class="flex flex-col lg:flex-row">
+    <!-- Sidebar para Desktop -->
+    <x-slot:sidebar drawer="main-drawer" collapsible class="w-full lg:w-1/4 bg-white text-dark shadow-xl mr-4">
 
-            {{-- Hidden when collapsed --}}
-            <div class="hidden-when-collapsed mx-4 mt-3 font-black text-3xl text-[#003CA2]">Eficiencia de Descarga</div>
+        <!-- Logo quando não está colapsado -->
+        <div class="hidden lg:block mx-4 mt-3 font-black text-3xl text-[#003CA2]">Eficiencia de Descarga</div>
 
-            {{-- Display when collapsed --}}
-            <div class="display-when-collapsed mx-2 mt-3 font-black text-3xl text-[#003CA2]">EFD</div>
+        <!-- Logo quando colapsado -->
+        <div class="block lg:hidden mx-2 mt-3 font-black text-3xl text-[#003CA2]">EFD</div>
 
-            {{-- Custom `active menu item background color` --}}
-            <x-menu activate-by-route>
-                <x-menu-item title="Mensurar Descarga" icon="o-clock" link="{{ route('descargas.index') }}" />
-                <x-menu-item title="Placas" icon="o-archive-box" link="{{ route('placas.index') }}" />
-                <x-menu-item title="Relatório" icon="o-document" link="{{ route('relatorios.index') }}" />
-            </x-menu>
+        <!-- Menu -->
+        <x-menu activate-by-route>
+            <x-menu-item title="Mensurar Descarga" icon="o-clock" link="{{ route('descargas.index') }}" />
+            <x-menu-item title="Placas" icon="o-archive-box" link="{{ route('placas.index') }}" />
+            <x-menu-item title="Relatório" icon="o-document" link="{{ route('relatorios.index') }}" />
+        </x-menu>
+    </x-slot:sidebar>
 
-        </x-slot:sidebar>
+    <!-- Conteúdo Principal -->
+    <x-slot:content class="w-full lg:w-3/4">
+        <x-toast />
+        {{ $slot }}
+        <x-toast />
+    </x-slot:content>
+</x-main>
 
-        {{-- The `$slot` goes here --}}
-        <x-slot:content>
-            <x-toast />
-            {{ $slot }}
-            <x-toast />
-        </x-slot:content>
-    </x-main>
-
-    @livewireScripts
-    @livewireScriptConfig
+@livewireScripts
+@livewireScriptConfig
 </body>
-
 
 </html>

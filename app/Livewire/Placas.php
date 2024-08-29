@@ -69,7 +69,7 @@ class Placas extends Component
         $this->frota = '';
 
         // Adicionar uma mensagem de sucesso
-        $this->success('Placa adicionada com sucesso!');;
+        $this->success('Placa adicionada com sucesso!');
         $this->closeModal(); // Fechar o modal após salvar
     }
 

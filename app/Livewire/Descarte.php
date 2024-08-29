@@ -6,11 +6,14 @@ use Livewire\Component;
 use Carbon\Carbon;
 use App\Models\Descarga;
 use App\Models\Placa;
-use function Symfony\Component\Translation\t;
-use Illuminate\Database\Eloquent\Model;
+use Mary\Traits\Toast;
 
 class Descarte extends Component
 {
+    use Toast;
+
+    use Toast;
+
     public $unidade = 0;
     public $placa;
     public $data;
@@ -18,20 +21,27 @@ class Descarte extends Component
     public $end;
     public $placas;
     public $descargas;
+    public $isStarted = false; // Controle do estado do cronômetro
 
     protected $rules = [
         'placa' => 'required',
         'start' => 'required',
     ];
 
-    //Scan QRCode
+    // Mensagens de erro personalizadas
+    protected $messages = [
+        'placa.required' => 'Por favor, selecione uma placa.',
+        'start.required' => 'O cronômetro precisa ser iniciado.',
+    ];
+
+    // Scan QRCode
     public $qrCodeData;
 
     public function handleQrCodeScanned($qrCode)
     {
         $this->qrCodeData = $qrCode;
 
-        return redirect()->route( $this->qrCodeData);
+        return redirect()->route($this->qrCodeData);
     }
 
     public function mount()
@@ -48,13 +58,19 @@ class Descarte extends Component
 
     public function captureStart()
     {
-        $this->validateOnly('placa');
+        // Validação completa para garantir que uma placa foi selecionada
+        $this->validate([
+            'placa' => 'required'
+        ]);
+
+        // Se a validação passar, o cronômetro é iniciado
         $this->start = Carbon::now()->format('H:i:s');
-        session()->flash('message', 'Início capturado às ' . $this->start);
+        $this->isStarted = true;
     }
 
     public function create()
     {
+        // Validação de todos os campos obrigatórios antes de criar o registro
         $this->validate();
 
         $this->end = Carbon::now()->format('H:i:s');
@@ -77,7 +93,10 @@ class Descarte extends Component
         // Atualizar a lista de descargas
         $this->descargas = Descarga::all();
 
-        session()->flash('message', 'Registro criado com sucesso!');
+        $this->success('Registro criado com sucesso!');
+
+        // Permitir que o cronômetro possa ser iniciado novamente
+        $this->isStarted = false;
     }
 
     public function render()

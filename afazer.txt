@@ -1,31 +1,128 @@
 Quando clicar em iniciar não pode começar a contagem denovo, só depois que finalizar
 Aparecer as placas no relatório e náo o id
 
-            EXIBIR DESCARGAS ->
+         <section class="flex justify-center items-center min-h-screen bg-gray-100">
+             <x-app-layout>
+                 <div class="flex flex-col justify-center items-center bg-white p-6 rounded-lg shadow-md ">
+                     <form method="post" wire:submit.prevent="create" class="space-y-5 w-full flex flex-col items-center">
 
-    @foreach($descargas as $descarga)
-        {{ $descarga->placa }} - {{ $descarga->hora_inicio }} - {{ $descarga->hora_fim }} - {{ $descarga->data }}
-        <hr>
-    @endforeach
+                         <!-- Container do Leitor de QR Code -->
+                         <div class="p-6 rounded-lg border-blue-800 w-full max-w-md">
+                             <h1 class="text-xl font-semibold text-gray-800 mb-4 text-center">Leitor de QR Code</h1>
+                             <video id="reader" class="border-2 border-gray-700 rounded-lg bg-white" style="width: 100%; height: 100%;"></video>
+                         </div>
 
-    @if (session()->has('message'))
-        <div class="alert alert-success">
-            {{ session('message') }}
-        </div>
-    @endif
+                         <!-- Seletor de Placa -->
+                         <div class="w-full max-w-md mt-4">
+                             <label for="placa" class="block text-gray-800 text-lg font-semibold mb-2">Selecione a Placa: (Opcional)</label>
+                             <select name="placa" id="placa" class="form-select w-full border-gray-300 rounded-md shadow-sm" wire:model="placa">
+                                 <option value="">Selecione</option>
+                                 @forelse($placas as $placa)
+                                     <option value="{{ $placa->id }}">{{ $placa->placa }}</option>
+                                 @empty
+                                     <option value="">Nenhuma placa encontrada</option>
+                                 @endforelse
+                             </select>
+                             @error('placa') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                         </div>
 
+                         <!-- Botões -->
+                         <div class="w-full max-w-md">
+                             <button id="start-btn" wire:click.prevent="captureStart"
+                                     class="bg-blue-500 text-lg text-white px-8 py-2.5 rounded-md hover:bg-blue-600 focus:ring-2 focus:ring-blue-400 w-full mt-4 mb-4"
+                                 @disabled($isStarted)>
+                                 Iniciar
+                             </button>
+                         </div>
 
+                         <div class="timer-display text-4xl" id="timer">00:00:00</div>
 
+                         <div class="w-full max-w-md">
+                             <button id="stop-btn" type="submit" class="bg-green-500 text-lg text-white px-8 py-2.5 rounded-md hover:bg-green-600 w-full mt-4">Finalizar</button>
+                             @if (session()->has('message'))
+                                 <div class="alert alert-success">
+                                     {{ session('message') }}
+                                 </div>
+                             @endif
+                         </div>
 
-    <div class="mt-2 flex items-center">
-        <label for="placa" class="block text-md font-medium text-gray-700">Placa: </label>
-        <input type="text" id="placa" class="mt-1 ms-1 block w-40 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                     </form>
+                     <hr class="my-4 border-gray-300 w-full">
 
-        <div class="ml-4 flex items-center space-x-2"> <!-- Adicionado espaço entre o texto e o switch -->
-            <span class="text-md font-medium text-gray-700">Mercosul</span>
-            <label for="mercosul" class="inline-flex items-center cursor-pointer relative">
-                <input type="checkbox" id="mercosul" class="sr-only peer" />
-                <div class="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-blue-500 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:transition-all"></div>
-            </label>
-        </div>
-    </div>
+                     <!-- Scripts do QR Code e Cronômetro -->
+
+                     <script src="timer.js"></script>
+                     <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+                     <script type="text/javascript">
+                         let scanner = new Instascan.Scanner({ video: document.getElementById('reader'), mirror: false });
+                         scanner.addListener('scan', function (content) {
+                             console.log('Scanned content: ' + content);
+                         @this.call('handleQrCodeScanned', content);
+                         });
+                         Instascan.Camera.getCameras().then(function (cameras) {
+                             if (cameras.length > 0) {
+                                 scanner.start(cameras[0]);
+                             } else {
+                                 console.error('Nenhuma câmera encontrada.');
+                             }
+                         }).catch(function (e) {
+                             console.error(e);
+                         });
+                     </script>
+
+                     <script>
+                         let timerInterval;
+                         let startTime;
+                         let elapsedTime = 0;
+
+                         function formatTime(ms) {
+                             let totalSeconds = Math.floor(ms / 1000);
+                             let hours = Math.floor(totalSeconds / 3600);
+                             let minutes = Math.floor((totalSeconds % 3600) / 60);
+                             let seconds = totalSeconds % 60;
+
+                             return (
+                                 (hours < 10 ? "0" : "") + hours + ":" +
+                                 (minutes < 10 ? "0" : "") + minutes + ":" +
+                                 (seconds < 10 ? "0" : "") + seconds
+                             );
+                         }
+
+                         function startTimer() {
+                             startTime = Date.now() - elapsedTime;
+                             timerInterval = setInterval(function () {
+                                 elapsedTime = Date.now() - startTime;
+                                 document.getElementById('timer').textContent = formatTime(elapsedTime);
+                             }, 1000);
+                         }
+
+                         function stopTimer() {
+                             clearInterval(timerInterval);
+                             document.getElementById('start-btn').disabled = false;  // Habilita o botão de iniciar novamente
+
+                             // Resetar o cronômetro
+                             elapsedTime = 0;
+                             document.getElementById('timer').textContent = formatTime(elapsedTime);
+                         }
+
+                         document.getElementById('start-btn').addEventListener('click', function () {
+                             const placaValue = document.getElementById('placa').value;
+
+                             if (!placaValue) {
+                                 alert('Por favor, selecione uma placa antes de iniciar.');
+                                 return;
+                             }
+
+                             startTimer();
+                             document.getElementById('start-btn').disabled = true;  // Desabilita o botão de iniciar após clicar
+                         });
+
+                         document.getElementById('stop-btn').addEventListener('click', function () {
+                             stopTimer();
+                         @this.call('create', elapsedTime / 1000);  // Envia o tempo decorrido para o backend
+                         });
+                     </script>
+
+                 </div>
+             </x-app-layout>
+         </section>
