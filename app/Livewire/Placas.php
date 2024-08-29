@@ -17,7 +17,19 @@ class Placas extends Component
     public $isOpen = false;
 
     public $placa = '';
-    public $frota = ''; // Campo frota
+    public $frota = '';
+    public $qrCodeUrl;
+
+    public function generateQrCode()
+    {
+        // Gerar o URL para o QR Code com o valor da placa
+        $this->qrCodeUrl = "https://quickchart.io/qr?text=" . urlencode($this->placa);
+    }
+    public function closeQrCodeModal()
+    {
+        $this->qrCodeUrl = null;
+    }
+
 
     // Regras de validação
     protected $rules = [

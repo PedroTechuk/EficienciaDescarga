@@ -97,9 +97,30 @@
                             <td class="py-2 px-4">{{ $placa->frota }}</td>
                             <td class="py-2 px-4 text-right">
                                 <div class="flex justify-end space-x-2">
-                                    <x-button class="bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-gray-400 rounded-2xl p-2 flex items-center justify-center" title="Gerar QrCode">
+                                    <!--Botão Gerar QrCode-->
+                                    <x-button wire:click="generateQrCode({{ $placa->id }})" class="bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-gray-400 rounded-2xl p-2 flex items-center justify-center" title="Gerar QrCode">
                                         <x-icon name="o-qr-code" class="w-6 h-5" alt="Gerar QrCode" />
                                     </x-button>
+                                    <!-- Exibir o QR code gerado -->
+                                    @if ($qrCodeUrl)
+                                        <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75 z-50">
+                                            <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                                                <img src="{{ $qrCodeUrl }}" alt="QR Code" class="mx-auto mb-4" />
+                                                <div class="flex justify-center space-x-4">
+                                                    <a href="{{ $qrCodeUrl }}" download="qr_code.png" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                                                        Baixar
+                                                    </a>
+                                                    <button onclick="window.print();" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                                                        Imprimir
+                                                    </button>
+                                                </div>
+                                                <button class="mt-4 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded" wire:click="closeQrCodeModal">
+                                                    Fechar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    <!--Botão Excluir placa-->
                                     <x-button class="bg-red-500 text-white hover:bg-red-600 focus:ring-red-400 rounded-2xl p-2 flex items-center justify-center" title="Excluir" wire:click="delete({{ $placa->id }})" wire:confirm="Tem certeza que deseja excluir esta placa?">
                                         <x-icon name="o-trash" class="w-5 h-5" alt="Excluir" />
                                     </x-button>
