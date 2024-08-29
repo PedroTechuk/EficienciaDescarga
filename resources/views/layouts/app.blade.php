@@ -43,10 +43,10 @@
     <x-slot:sidebar drawer="main-drawer" collapsible class="w-full lg:w-1/4 bg-white text-dark shadow-xl mr-4">
 
         <!-- Logo quando não está colapsado -->
-        <div class="hidden lg:block mx-4 mt-3 font-black text-3xl text-[#003CA2]">Eficiencia de Descarga</div>
+        <div class="hidden-when-collapsed mx-4 mt-3 font-black text-3xl text-[#003CA2]">Eficiencia de Descarga</div>
 
         <!-- Logo quando colapsado -->
-        <div class="block lg:hidden mx-2 mt-3 font-black text-3xl text-[#003CA2]">EFD</div>
+        <div class="display-when-collapsed mx-2 mt-3 font-black text-3xl text-[#003CA2]">EFD</div>
 
         <!-- Menu -->
         <x-menu activate-by-route>
@@ -55,6 +55,9 @@
             <x-menu-item title="Relatório" icon="o-document" link="{{ route('relatorios.index') }}" />
         </x-menu>
     </x-slot:sidebar>
+
+
+
 
     <!-- Conteúdo Principal -->
     <x-slot:content class="w-full lg:w-3/4">
