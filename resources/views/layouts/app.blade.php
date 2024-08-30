@@ -14,8 +14,6 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/styles/choices.min.css" />
 
-    <script src="https://unpkg.com/html5-qrcode"></script>
-
     <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/scripts/choices.min.js"></script>
@@ -34,7 +32,7 @@
         <label for="main-drawer" class="lg:hidden mr-3">
             <x-icon name="o-bars-3" class="cursor-pointer" />
         </label>
-        Eficiencia de Descarga
+        <span class=" font-medium"> Eficiencia de Descarga</span>
     </x-slot:brand>
 </x-nav>
 
