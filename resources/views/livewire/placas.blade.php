@@ -104,41 +104,27 @@
 
                                     <!-- Exibir o QR Code gerado -->
                                     @if ($qrCodeUrl)
-                                        <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75 z-50">
-                                            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full relative">
-                                                <!-- Botão "X" no canto superior direito -->
-                                                <button class="absolute top-0 right-0 mt-2 mr-2 text-gray-500 hover:text-gray-700 focus:outline-none" wire:click="closeQrCodeModal">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                                    </svg>
-                                                </button>
-
+                                        <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40">
+                                            <div class="bg-white rounded-lg shadow-xl transform transition-all sm:max-w-lg sm:w-full">
                                                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                                                     <div class="flex flex-col items-center">
                                                         <h3 class="text-lg leading-6 font-medium text-gray-900 text-center">
-                                                            QR Code Gerado
+                                                            QR Code Gerado!
                                                         </h3>
                                                         <div class="mt-4 text-center">
-                                                            <img src="{{ $qrCodeUrl }}" alt="QR Code" class="mx-auto mb-4" />
+                                                            <img src="{{ $qrCodeUrl }}" alt="QR Code" class="mx-auto mb-4 size-72" />
                                                         </div>
                                                     </div>
                                                 </div>
-
-                                                <div class="bg-gray-50 px-4 py-3 sm:px-6 flex justify-center space-x-4">
-                                                    <button class="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:w-auto sm:text-sm">
-                                                    <a href="{{ $qrCodeUrl }}" download="qr_code.png" >
-                                                        <span class="ml-2">Baixar</span>
-                                                        <x-icon name="o-arrow-down-tray" class="w-5 h-4" alt="Baixar QrCode" />
-                                                    </a>
-                                                    </button>
-                                                    <button onclick="window.print();" class="inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:w-auto sm:text-sm">
-                                                        <span class="ml-2">Imprimir</span>
-                                                        <x-icon name="o-printer" class="ms-1 w-5 h-4" alt="Imprimir QrCode" />
+                                                <div class="flex justify-end bg-gray-50 px-4 py-3 sm:px-6 rounded-b-lg">
+                                                    <button class="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm" wire:click="closeQrCodeModal">
+                                                        Fechar
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
                                     @endif
+
                                     <!-- Botão Excluir placa -->
                                     <x-button class="bg-red-500 text-white hover:bg-red-600 focus:ring-red-400 rounded-2xl p-2 flex items-center justify-center" title="Excluir" wire:click="delete({{ $placa->id }})" wire:confirm="Tem certeza que deseja excluir esta placa?">
                                         <x-icon name="o-trash" class="w-5 h-5" alt="Excluir" />
