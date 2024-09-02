@@ -35,7 +35,12 @@
                 <div class="timer-display text-4xl" id="timer">00:00:00</div>
 
                 <div class="w-full max-w-md">
-                    <button id="stop-btn" type="submit" class="bg-green-500 text-lg text-white px-8 py-2.5 rounded-md hover:bg-green-600 w-full mt-4">Finalizar</button>
+                    <button id="stop-btn" type="button"
+                            class="bg-green-500 text-lg text-white px-8 py-2.5 rounded-md hover:bg-green-600 w-full mt-4"
+                            wire:click="create"
+                            @if(!$isStarted) disabled @endif>
+                        Finalizar
+                    </button>
                     @if (session()->has('message'))
                         <div class="alert alert-success">
                             {{ session('message') }}
@@ -64,6 +69,36 @@
                     }
                 }).catch(function (e) {
                     console.error(e);
+                });
+                // Preencher o campo Placa
+                scanner.addListener('scan', function (content) {
+                    console.log('Scanned content: ' + content);
+                @this.call('handleQrCodeScanned', content);  // Mantém a chamada para o método Livewire
+
+                    // Preencher o campo de seleção de placa
+                    let selectElement = document.getElementById('placa');
+                    let optionExists = false;
+
+                    // Verificar se a opção já existe
+                    for (let i = 0; i < selectElement.options.length; i++) {
+                        if (selectElement.options[i].value === content) {
+                            selectElement.selectedIndex = i;  // Selecionar a opção
+                            optionExists = true;
+                            break;
+                        }
+                    }
+
+                    // Se a opção não existir, adicionar uma nova
+                    if (!optionExists) {
+                        let newOption = document.createElement('option');
+                        newOption.value = content;
+                        newOption.text = content;
+                        selectElement.add(newOption);
+                        selectElement.value = content;  // Selecionar a nova opção
+                    }
+
+                    // Atualizar o valor da variável Livewire
+                @this.set('placa', content);
                 });
             </script>
 

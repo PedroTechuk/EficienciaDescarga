@@ -40,8 +40,7 @@ class Descarte extends Component
     public function handleQrCodeScanned($qrCode)
     {
         $this->qrCodeData = $qrCode;
-
-        return redirect()->route($this->qrCodeData);
+        $this->placa = $qrCode;
     }
 
     public function mount()
@@ -70,6 +69,11 @@ class Descarte extends Component
 
     public function create()
     {
+        // Verifica se o cronômetro foi iniciado
+        if (!$this->isStarted) {
+            return;
+        }
+
         // Validação de todos os campos obrigatórios antes de criar o registro
         $this->validate();
 
@@ -89,6 +93,9 @@ class Descarte extends Component
         $this->start = '';
         $this->end = '';
         $this->placaSelecionada = null; // Resetar a placa selecionada
+
+        // Limpar as mensagens de erro e validação
+        $this->resetValidation();
 
         // Atualizar a lista de descargas
         $this->descargas = Descarga::all();

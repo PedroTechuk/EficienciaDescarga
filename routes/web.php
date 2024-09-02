@@ -4,12 +4,12 @@ use App\Livewire\Placas;
 use App\Livewire\Relatorio;
 use Livewire\Livewire;
 use Livewire\Volt\Volt;
+use App\Http\Controllers\DescargaController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SolicitacaoController;
 use App\Http\Controllers\SetorController;
 use App\Livewire\Descarte;
-use App\Livewire\Counter;
 use App\Models\Perfil;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -41,6 +41,7 @@ if (env('APP_ENV') === 'production') {
 Route::get('/descargas', Descarte::class)->name('descargas.index');
 Route::get('/placas', Placas::class)->name('placas.index');
 Route::get('/relatorios', Relatorio::class)->name('relatorios.index');
+Route::get('/descargas/export-csv', [DescargaController::class, 'exportCsv'])->name('descargas.csv');
 
 
 Route::prefix('/erros')->group(function () {

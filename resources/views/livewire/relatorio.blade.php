@@ -3,10 +3,15 @@
         <div class="flex items-center justify-between mb-4">
             <div class="font-black text-3xl text-[#003CA2]">Relatório de Descargas</div>
 
-            <x-button class="bg-green-500 text-white hover:bg-green-600 focus:ring-green-400 rounded-2xl p-2 flex justify-end items-center" title="Baixar CSV">
+            <x-button
+                class="bg-green-500 text-white hover:bg-green-600 focus:ring-green-400 rounded-2xl p-2 flex justify-end items-center"
+                title="Baixar CSV"
+                onclick="window.location='{{ route('descargas.csv') }}'"
+            >
                 <span class="ml-2">Baixar CSV</span>
                 <x-icon name="o-arrow-down-tray" class="w-5 h-4" alt="Baixar CSV" />
             </x-button>
+
         </div>
 
         <!-- Mensagem de sucesso -->

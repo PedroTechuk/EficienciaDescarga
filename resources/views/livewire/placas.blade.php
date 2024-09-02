@@ -104,7 +104,7 @@
 
                                     <!-- Exibir o QR Code gerado -->
                                     @if ($qrCodeUrl)
-                                        <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40">
+                                        <div class="fixed inset-0 flex items-center justify-center bg-gray-100 bg-opacity-20">
                                             <div class="bg-white rounded-lg shadow-xl transform transition-all sm:max-w-lg sm:w-full">
                                                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                                                     <div class="flex flex-col items-center">
