@@ -63,7 +63,7 @@ class Descarte extends Component
         ]);
 
         // Se a validação passar, o cronômetro é iniciado
-        $this->start = Carbon::now()->format('H:i:s');
+        $this->start = Carbon::now('America/Sao_Paulo')->format('H:i:s');
         $this->isStarted = true;
     }
 
@@ -77,8 +77,8 @@ class Descarte extends Component
         // Validação de todos os campos obrigatórios antes de criar o registro
         $this->validate();
 
-        $this->end = Carbon::now()->format('H:i:s');
-        $this->data = Carbon::now()->format('Y-m-d');
+        $this->end = Carbon::now('America/Sao_Paulo')->format('H:i:s');
+        $this->data = Carbon::now('America/Sao_Paulo')->format('Y-m-d');
 
         Descarga::create([
             'unidade' => $this->unidade,

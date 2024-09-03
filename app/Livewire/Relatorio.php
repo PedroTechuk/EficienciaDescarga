@@ -65,6 +65,15 @@ class Relatorio extends Component
             ->get();
     }
 
+    public function delete($id)
+    {
+
+        $descarga = Descarga::findOrFail($id);
+        $descarga->delete();
+        $this->descargas = Descarga::orderBy('created_at', 'desc')->get();
+        $this->success('Placa removida com sucesso!');
+    }
+
     public function render()
     {
         return view('livewire.relatorio');
