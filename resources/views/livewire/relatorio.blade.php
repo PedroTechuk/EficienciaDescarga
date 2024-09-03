@@ -1,58 +1,69 @@
 <section>
     <x-app-layout>
-        <div class="flex items-center justify-between mb-4">
-            <div class="font-black text-3xl text-[#003CA2]">Relatório de Descargas</div>
+        <div class="flex flex-col lg:flex-row items-center justify-between mb-4">
+            <div class="font-black text-3xl text-[#003CA2] mb-4 lg:mb-0">Relatório de Descargas</div>
 
-            <div class="flex items-center space-x-4">
-                <!-- Filtro de Mês -->
-                <div class="relative inline-block text-left">
-                    <label for="monthFilter" class="sr-only">Mês</label>
-                    <select id="monthFilter" wire:model="selectedMonth" class="bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded-lg focus:outline-none focus:ring focus:border-blue-300">
-                        <option value="">Todos os Meses</option>
-                        @foreach (range(1, 12) as $month)
-                            <option value="{{ $month }}">{{ \Carbon\Carbon::create()->month($month)->translatedFormat('F') }}</option>
-                        @endforeach
-                    </select>
+            <div class="flex flex-col lg:flex-row lg:space-x-4 space-y-4 lg:space-y-0 items-center w-full">
+                <!-- Formulário de Filtro e Botões -->
+                <div class="flex flex-col lg:flex-row justify-center space-y-4 lg:space-y-0 lg:space-x-4 items-center w-full">
+                    <!-- Seleção de Ano -->
+                    <div class="w-full lg:w-1/4">
+                        <label for="year" class="block text-sm font-medium text-gray-700">Ano</label>
+                        <select id="year" class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            <option value="">Todos os Anos</option>
+                            @foreach($years as $year)
+                                <option value="{{ $year }}">{{ $year }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Seleção de Mês -->
+                    <div class="w-full lg:w-1/4">
+                        <label for="month" class="block text-sm font-medium text-gray-700">Mês</label>
+                        <select id="month" wire:model="selectedMonth" class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            <option value="">Todos os Meses</option>
+                            @foreach($months as $index => $month)
+                                <option value="{{ $index }}">{{ $month }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Seleção de Dia -->
+                    <div class="w-full lg:w-1/4">
+                        <label for="day" class="block text-sm font-medium text-gray-700">Dia</label>
+                        <select id="day" wire:model="selectedDay" class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            <option value="">Todos os Dias</option>
+                            @for($i = 1; $i <= 31; $i++)
+                                <option value="{{ $i }}">{{ $i }}</option>
+                            @endfor
+                        </select>
+                    </div>
+
+                    <!-- Botões de Filtro -->
+                    <div class="flex space-x-4">
+                        <!-- Botão para Filtrar -->
+                        <button type="button" id="filter-btn" wire:click.prevent="applyFilters" class="border border-gray-300 text-gray-700 hover:text-blue-500 rounded-md p-2 mt-4 lg:mt-0">
+                            <x-icon name="o-magnifying-glass" class="w-5 h-5" alt="Filtrar" />
+                        </button>
+
+                        <!-- Botão para Limpar Filtros -->
+                        <button type="button" id="clear-btn" wire:click.prevent="clearFilters" class="border border-gray-300 text-gray-700 hover:text-red-500 rounded-md p-2 mt-4 lg:mt-0">
+                            <x-icon name="o-x-circle" class="w-5 h-5" alt="Limpar" />
+                        </button>
+                    </div>
                 </div>
-
-                <!-- Filtro de Dias -->
-                <div class="relative inline-block text-left">
-                    <label for="daysFilter" class="sr-only">Dias</label>
-                    <select id="daysFilter" wire:model="selectedDays" class="bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded-lg focus:outline-none focus:ring focus:border-blue-300">
-                        <option value="">Dias</option>
-                        <option value="0">Hoje</option>
-                        <option value="7">Últimos 7 Dias</option>
-                        <option value="15">Últimos 15 Dias</option>
-                        <option value="30">Últimos 30 Dias</option>
-                        <option value="60">Últimos 60 Dias</option>
-                        <option value="90">Últimos 90 Dias</option>
-                    </select>
-                </div>
-
-                <!-- Botão para Baixar CSV -->
-                <x-button
-                    class="bg-green-500 text-white hover:bg-green-600 focus:ring-green-400 rounded-2xl p-2 flex justify-end items-center"
-                    title="Baixar CSV"
-                    onclick="window.location='{{ route('descargas.csv') }}'"
-                >
-                    <span class="ml-2">Baixar CSV</span>
-                    <x-icon name="o-arrow-down-tray" class="w-5 h-4" alt="Baixar CSV" />
-                </x-button>
             </div>
-        </div>
 
-        <!-- Mensagem de sucesso -->
-        @if (session()->has('message'))
-            <mary-alert
-                id="success-alert"
-                type="success"
-                dismissable="true"
-                duration="5000"
-                role="alert"
+            <!-- Botão para Baixar CSV -->
+            <x-button
+                class="bg-green-500 text-white hover:bg-green-600 focus:ring-green-400 rounded-2xl p-2 flex justify-end items-center"
+                title="Baixar CSV"
+                onclick="window.location='{{ route('descargas.csv') }}'"
             >
-                <strong>Sucesso!</strong> {{ session('message') }}
-            </mary-alert>
-        @endif
+                <span class="ml-2">Baixar CSV</span>
+                <x-icon name="o-arrow-down-tray" class="w-5 h-4" alt="Baixar CSV" />
+            </x-button>
+        </div>
 
         <div class="flex flex-col text-lg space-y-4">
             <div class="overflow-x-auto">
@@ -67,9 +78,9 @@
                         <th class="py-2 px-4 bg-gray-100 border-b text-center text-gray-800"></th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="descargas-table-body">
                     @foreach($descargas as $descarga)
-                        <tr class="border-b">
+                        <tr data-date="{{ \Carbon\Carbon::parse($descarga->data)->format('Y-m-d') }}" class="border-b">
                             <td class="py-2 px-4 text-center">{{ $descarga->placa?->placa }}</td>
                             <td class="py-2 px-4 text-center">{{ $descarga->hora_inicio }}</td>
                             <td class="py-2 px-4 text-center">{{ $descarga->hora_fim }}</td>
@@ -92,5 +103,42 @@
                 </table>
             </div>
         </div>
+
+        <!-- Script para filtro -->
+        <script>
+            document.getElementById('filter-btn').addEventListener('click', function() {
+                const year = document.getElementById('year').value;
+                const month = document.getElementById('month').value.padStart(2, '0');  // Garantir que o mês tenha dois dígitos
+                const day = document.getElementById('day').value.padStart(2, '0');  // Garantir que o dia tenha dois dígitos
+
+                const rows = document.querySelectorAll('#descargas-table-body tr');
+
+                rows.forEach(row => {
+                    const date = row.getAttribute('data-date');
+                    const [rowYear, rowMonth, rowDay] = date.split('-');
+
+                    // Mostrar a linha se todos os filtros corresponderem ou não estiverem selecionados
+                    if ((year === "" || year === rowYear) &&
+                        (month === "" || month === rowMonth) &&
+                        (day === "" || day === rowDay)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+
+            document.getElementById('clear-btn').addEventListener('click', function() {
+                document.getElementById('year').value = '';
+                document.getElementById('month').value = '';
+                document.getElementById('day').value = '';
+
+                // Mostrar todas as linhas
+                const rows = document.querySelectorAll('#descargas-table-body tr');
+                rows.forEach(row => {
+                    row.style.display = '';
+                });
+            });
+        </script>
     </x-app-layout>
 </section>

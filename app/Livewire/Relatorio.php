@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Descarga;
 use App\Models\Placa;
+use Carbon\Carbon;
 use Livewire\Component;
 use Mary\Traits\Toast;
 
@@ -13,64 +14,77 @@ class Relatorio extends Component
 
     public $placas;
     public $descargas;
-
-    public $selectedMonth;  // Propriedade para o mês selecionado
-    public $selectedDays;   // Propriedade para os dias selecionados
+    public $selectedYear;  // Propriedade para o ano selecionado
+    public $selectedMonth; // Propriedade para o mês selecionado
+    public $selectedDay;   // Propriedade para o dia selecionado
+    public $years;         // Array para anos
+    public $months;        // Array para meses
 
     public function mount()
     {
         \Carbon\Carbon::setLocale('pt_BR');
         $this->placas = Placa::all();
-        $this->descargas = Descarga::with('placa')
-            ->orderBy('data', 'desc')
-            ->orderBy('hora_inicio', 'desc')
-            ->get();
+
+        $this->years = range(Carbon::now()->year, Carbon::now()->year );
+
+        $this->months = [
+            '' => 'Todos os Meses',
+            1 => 'Janeiro',
+            2 => 'Fevereiro',
+            3 => 'Março',
+            4 => 'Abril',
+            5 => 'Maio',
+            6 => 'Junho',
+            7 => 'Julho',
+            8 => 'Agosto',
+            9 => 'Setembro',
+            10 => 'Outubro',
+            11 => 'Novembro',
+            12 => 'Dezembro',
+        ];
+
+        // Aplicar os filtros na inicialização
+        $this->applyFilters();
     }
 
     public function applyFilters()
     {
         $query = Descarga::with('placa');
 
-        // Filtrar por mês selecionado
+        // Sempre aplicar o filtro para o ano fixo (já resolvido por você)
+        $query->whereYear('data', 2024);
+
+        // Aplicar filtro por mês se selecionado
         if ($this->selectedMonth) {
-            $monthStart = Carbon::create()->month($this->selectedMonth)->startOfMonth()->startOfDay()->toDateTimeString();
-            $monthEnd = Carbon::create()->month($this->selectedMonth)->endOfMonth()->endOfDay()->toDateTimeString();
-            $query->whereBetween('data', [$monthStart, $monthEnd]);
+            $query->whereMonth('data', $this->selectedMonth);
         }
 
-        // Filtrar por dias selecionados
-        if ($this->selectedDays !== null && $this->selectedDays !== '') {
-            if ($this->selectedDays === '0') {
-                $query->whereDate('data', Carbon::today()->toDateString());
-            } else {
-                $dateFrom = Carbon::now()->subDays($this->selectedDays)->startOfDay()->toDateTimeString();
-                $query->whereDate('data', '>=', $dateFrom);
-            }
+        // Aplicar filtro por dia se selecionado
+        if ($this->selectedDay) {
+            $query->whereDay('data', $this->selectedDay);
         }
 
-        // Ordenar e obter os resultados
+        // Executar a consulta com ordenação
         $this->descargas = $query->orderBy('data', 'desc')
             ->orderBy('hora_inicio', 'desc')
             ->get();
     }
 
-    // Método para limpar os filtros
     public function clearFilters()
     {
+        $this->selectedYear = null;
         $this->selectedMonth = null;
-        $this->selectedDays = null;
-        $this->descargas = Descarga::with('placa')
-            ->orderBy('data', 'desc')
-            ->orderBy('hora_inicio', 'desc')
-            ->get();
+        $this->selectedDay = null;
+
+        // Recarregar todas as descargas sem filtros
+        $this->applyFilters();
     }
 
     public function delete($id)
     {
-
         $descarga = Descarga::findOrFail($id);
         $descarga->delete();
-        $this->descargas = Descarga::orderBy('created_at', 'desc')->get();
+        $this->applyFilters();
         $this->success('Placa removida com sucesso!');
     }
 
