@@ -34,7 +34,7 @@ class Placas extends Component
 
     public function openModal()
     {
-        $this->isOpen = true;
+        $this->isOpen = false;
     }
 
     public function closeModal()
