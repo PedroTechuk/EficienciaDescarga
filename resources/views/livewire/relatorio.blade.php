@@ -58,7 +58,7 @@
             <x-button
                 class="bg-green-500 text-white hover:bg-green-600 focus:ring-green-400 rounded-2xl p-2 flex justify-end items-center"
                 title="Baixar CSV"
-                onclick="window.location='{{ route('descargas.csv') }}'"
+                onclick="downloadCsvWithFilters()"
             >
                 <span class="ml-2">Baixar CSV</span>
                 <x-icon name="o-arrow-down-tray" class="w-5 h-4" alt="Baixar CSV" />
@@ -72,7 +72,6 @@
                     <thead>
                     <tr>
                         <th class="py-2 px-4 bg-gray-100 border-b text-center text-gray-800">Placa</th>
-                        <th class="py-2 px-4 bg-gray-100 border-b text-center text-gray-800">Início Descarga</th>
                         <th class="py-2 px-4 bg-gray-100 border-b text-center text-gray-800">Fim Descarga</th>
                         <th class="py-2 px-4 bg-gray-100 border-b text-center text-gray-800">Data</th>
                         <th class="py-2 px-4 bg-gray-100 border-b text-center text-gray-800"></th>
@@ -82,7 +81,6 @@
                     @foreach($descargas as $descarga)
                         <tr data-date="{{ \Carbon\Carbon::parse($descarga->data)->format('Y-m-d') }}" class="border-b">
                             <td class="py-2 px-4 text-center">{{ $descarga->placa?->placa }}</td>
-                            <td class="py-2 px-4 text-center">{{ $descarga->hora_inicio }}</td>
                             <td class="py-2 px-4 text-center">{{ $descarga->hora_fim }}</td>
                             <td class="py-2 px-4 text-center">{{ \Carbon\Carbon::parse($descarga->data)->format('d/m/Y') }}</td>
                             <td class="py-2 px-4 text-right">
@@ -104,12 +102,24 @@
             </div>
         </div>
 
-        <!-- Script para filtro -->
+        <!-- Script Baixar CSV  -->
+        <script>
+            function downloadCsvWithFilters() {
+                const year = document.getElementById('year').value;
+                const month = document.getElementById('month').value;
+                const day = document.getElementById('day').value;
+
+                const url = `{{ route('descargas.csv') }}?year=${year}&month=${month}&day=${day}`;
+                window.location.href = url;
+            }
+        </script>
+
+        <!-- Script do filtro -->
         <script>
             document.getElementById('filter-btn').addEventListener('click', function() {
                 const year = document.getElementById('year').value;
-                const month = document.getElementById('month').value.padStart(2, '0');  // Garantir que o mês tenha dois dígitos
-                const day = document.getElementById('day').value.padStart(2, '0');  // Garantir que o dia tenha dois dígitos
+                const month = document.getElementById('month').value.padStart(2, '0');
+                const day = document.getElementById('day').value.padStart(2, '0');
 
                 const rows = document.querySelectorAll('#descargas-table-body tr');
 

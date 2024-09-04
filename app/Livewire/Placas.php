@@ -20,6 +20,12 @@ class Placas extends Component
     public $frota = '';
     public $qrCodeUrl;
 
+    protected $messages = [
+        'placa.required' => 'O campo Placa é obrigatório.',
+        'placa.regex' => 'O formato da placa é inválido.',
+        'frota.required' => 'O campo Frota é obrigatório.',
+    ];
+
     // Regras de validação
     protected $rules = [
         'placa' => ['required', 'regex:/^[A-Z]{3}[0-9]{4}$|^[A-Z]{3}[0-9]{1}[A-Z]{1}[0-9]{2}$/'],

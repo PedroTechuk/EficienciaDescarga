@@ -41,7 +41,7 @@ if (env('APP_ENV') === 'production') {
 Route::get('/descargas', Descarte::class)->name('descargas.index');
 Route::get('/placas', Placas::class)->name('placas.index');
 Route::get('/relatorios', Relatorio::class)->name('relatorios.index');
-Route::get('/descargas/export-csv', [DescargaController::class, 'exportCsv'])->name('descargas.csv');
+Route::get('/descargas/csv', [DescargaController::class, 'exportCsv'])->name('descargas.csv');
 
 
 Route::prefix('/erros')->group(function () {

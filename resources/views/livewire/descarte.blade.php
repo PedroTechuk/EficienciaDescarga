@@ -23,23 +23,13 @@
                     @error('placa') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
-                <!-- Botões -->
-                <div class="w-full max-w-md">
-                    <button id="start-btn" wire:click.prevent="captureStart"
-                            class="bg-blue-500 text-lg text-white px-8 py-2.5 rounded-md hover:bg-blue-600 focus:ring-2 focus:ring-blue-400 w-full mt-4 mb-4"
-                        @disabled($isStarted)>
-                        Iniciar
-                    </button>
-                </div>
-
-                <div class="timer-display text-4xl" id="timer">00:00:00</div>
+                <!-- Botão Finalizar -->
 
                 <div class="w-full max-w-md">
                     <button id="stop-btn" type="button"
                             class="bg-green-500 text-lg text-white px-8 py-2.5 rounded-md hover:bg-green-600 w-full mt-4"
-                            wire:click="create"
-                            @if(!$isStarted) disabled @endif>
-                        Finalizar
+                            wire:click="create">
+                        Finalizar Descarga
                     </button>
                     @if (session()->has('message'))
                         <div class="alert alert-success">
@@ -51,9 +41,8 @@
             </form>
             <hr class="my-4 border-gray-300 w-full">
 
-            <!-- Scripts do QR Code e Cronômetro -->
+            <!-- Scripts do QR Code -->
 
-            <script src="timer.js"></script>
             <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
             <script type="text/javascript">
                 let scanner = new Instascan.Scanner({ video: document.getElementById('reader'), mirror: false });
@@ -73,7 +62,7 @@
                 // Preencher o campo Placa
                 scanner.addListener('scan', function (content) {
                     console.log('Scanned content: ' + content);
-                @this.call('handleQrCodeScanned', content);  // Mantém a chamada para o método Livewire
+                @this.call('handleQrCodeScanned', content);
 
                     // Preencher o campo de seleção de placa
                     let selectElement = document.getElementById('placa');
@@ -99,59 +88,6 @@
 
                     // Atualizar o valor da variável Livewire
                 @this.set('placa', content);
-                });
-            </script>
-
-            <script>
-                let timerInterval;
-                let startTime;
-                let elapsedTime = 0;
-
-                function formatTime(ms) {
-                    let totalSeconds = Math.floor(ms / 1000);
-                    let hours = Math.floor(totalSeconds / 3600);
-                    let minutes = Math.floor((totalSeconds % 3600) / 60);
-                    let seconds = totalSeconds % 60;
-
-                    return (
-                        (hours < 10 ? "0" : "") + hours + ":" +
-                        (minutes < 10 ? "0" : "") + minutes + ":" +
-                        (seconds < 10 ? "0" : "") + seconds
-                    );
-                }
-
-                function startTimer() {
-                    startTime = Date.now() - elapsedTime;
-                    timerInterval = setInterval(function () {
-                        elapsedTime = Date.now() - startTime;
-                        document.getElementById('timer').textContent = formatTime(elapsedTime);
-                    }, 1000);
-                }
-
-                function stopTimer() {
-                    clearInterval(timerInterval);
-                    document.getElementById('start-btn').disabled = false;  // Habilita o botão de iniciar novamente
-
-                    // Resetar o cronômetro
-                    elapsedTime = 0;
-                    document.getElementById('timer').textContent = formatTime(elapsedTime);
-                }
-
-                document.getElementById('start-btn').addEventListener('click', function () {
-                    const placaValue = document.getElementById('placa').value;
-
-                    if (!placaValue) {
-                        alert('Por favor, selecione uma placa antes de iniciar.');
-                        return;
-                    }
-
-                    startTimer();
-                    document.getElementById('start-btn').disabled = true;  // Desabilita o botão de iniciar após clicar
-                });
-
-                document.getElementById('stop-btn').addEventListener('click', function () {
-                    stopTimer();
-                @this.call('create', elapsedTime / 1000);  // Envia o tempo decorrido para o backend
                 });
             </script>
 
